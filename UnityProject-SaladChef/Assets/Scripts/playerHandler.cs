@@ -6,8 +6,10 @@ using UnityEngine.UI;
 public class playerHandler : MonoBehaviour
 {
     public float speed;
-    private Vector2 moveVelocity;
+
     Rigidbody2D rb;
+
+    string plateAin, plateBin;
 
     [SerializeField]
     string horizontalAxisName="Horizontal", VerticalAxisName="Vertical";
@@ -21,9 +23,10 @@ public class playerHandler : MonoBehaviour
     [SerializeField]
     Text plateAText, plateBText;
 
-    string plateAin, plateBin;
-
     public bool p1;
+
+    private GameObject stayingOn;
+    private Vector2 moveVelocity;
 
     // Start is called before the first frame update
     void Start()
@@ -44,30 +47,148 @@ public class playerHandler : MonoBehaviour
             moveVelocity = inputVal.normalized * speed;
         else
             moveVelocity = Vector2.zero;
+        
+        plateAText.text = "" + plateAin;
+        plateBText.text = "" + plateBin;
+         
 
-        if (plateAin != "")
-        {
-            plateA.SetActive(true);
-            plateAText.text = "" + plateAin;
-        }else{
-            plateA.SetActive(false);
+        if (stayingOn != null){
+            if (stayingOn.tag == "ingredient")
+            {
+                if (p1)
+                {
+                    if (Input.GetKeyDown(KeyCode.E))
+                        handleIngredient();
+                }
+                else
+                    if (Input.GetKeyDown(KeyCode.M))
+                    handleIngredient();
+
+            }
+            else if (stayingOn.tag == "extraplate")
+            {
+                if (p1)
+                {
+                    if (Input.GetKeyDown(KeyCode.E))
+                        handleExtraPlate();
+                }
+                else
+                    if (Input.GetKeyDown(KeyCode.M))
+                    handleExtraPlate();
+
+            }
+            else if (stayingOn.tag == "trash")
+            {
+                //To stop interactable alert when we have emptied the plate
+                if (plateAin == "")
+                    interactableAlert.SetActive(false);
+                if (p1)
+                {
+                    if (Input.GetKeyDown(KeyCode.E))
+                        handleTrash();
+                }
+                else
+                    if (Input.GetKeyDown(KeyCode.M))
+                    handleTrash();
+            }
+            else if (stayingOn.tag == "chopping")
+            {
+                if (p1)
+                {
+                    if (Input.GetKeyDown(KeyCode.E))
+                        handleChoppingBoard();
+                    if (Input.GetKey(KeyCode.E))
+                    {
+                        stayingOn.GetComponent<choppingTableHandler>().decreaseTime();
+                    }
+                }
+                else
+                {
+                    if (Input.GetKeyDown(KeyCode.M))
+                        handleChoppingBoard();
+                    if (Input.GetKey(KeyCode.M))
+                    {
+                        stayingOn.GetComponent<choppingTableHandler>().decreaseTime();
+                    }
+                }
+            }
         }
+    }
 
-        if (plateBin != "")
+    void handleChoppingBoard(){
+        if(stayingOn.GetComponent<choppingTableHandler>().item.text==""){
+            if(plateAin!=""){
+                stayingOn.GetComponent<choppingTableHandler>().addItem(plateAin);
+                plateAin = plateBin;
+                plateBin = "";
+            }
+        }else{
+            if(plateAin!=""&& stayingOn.GetComponent<choppingTableHandler>().temp == 0f){
+                if (stayingOn.GetComponent<choppingTableHandler>().item.text.ToCharArray().Length == 4)
+                {
+                    interactableAlert.SetActive(false);
+                    if (plateBin == "")
+                    {
+                        plateBin = "" + stayingOn.GetComponent<choppingTableHandler>().item.text;
+                        stayingOn.GetComponent<choppingTableHandler>().item.text = "";
+                    }
+                }
+                else
+                {
+                    stayingOn.GetComponent<choppingTableHandler>().addItem(plateAin);
+                    plateAin = plateBin;
+                    plateBin = "";
+                }
+            }
+            else if(plateAin==""&&stayingOn.GetComponent<choppingTableHandler>().temp==0f){
+                plateAin = "" + stayingOn.GetComponent<choppingTableHandler>().item.text;
+                stayingOn.GetComponent<choppingTableHandler>().item.text = "";
+            }
+        }
+    }
+
+    void handleExtraPlate(){
+        if (stayingOn.GetComponent<extraPlateHandler>().item.text == "")
         {
-            plateB.SetActive(true);
-            plateBText.text = "" + plateBin;
+            if (plateAin != "")
+            {
+                stayingOn.GetComponent<extraPlateHandler>().item.text = "" + plateAin;
+                plateAin = plateBin;
+                plateBin = "";
+            }
         }
         else
         {
-            plateB.SetActive(false);
+            if (plateAin == "")
+            {
+                plateAin = "" + stayingOn.GetComponent<extraPlateHandler>().item.text;
+                stayingOn.GetComponent<extraPlateHandler>().item.text = "";
+            }
+            else if (plateBin == "")
+            {
+                plateBin = "" + stayingOn.GetComponent<extraPlateHandler>().item.text;
+                stayingOn.GetComponent<extraPlateHandler>().item.text = "";
+            }
+        }
+    }
+
+    void handleIngredient(){
+        if (plateAin == "")
+            plateAin = "" + stayingOn.GetComponent<ingredientHandler>().ingredient;
+        else if (plateBin == "")
+            plateBin = "" + stayingOn.GetComponent<ingredientHandler>().ingredient;
+    }
+
+    void handleTrash(){
+        if (plateAin != ""){
+            plateAin = plateBin;
+            plateBin = "";
         }
     }
 
     private void FixedUpdate()
     {
         rb.MovePosition(rb.position + moveVelocity * Time.fixedDeltaTime);
-
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -76,36 +197,30 @@ public class playerHandler : MonoBehaviour
         {
             if(plateBin=="")
                 interactableAlert.SetActive(true);
+        }else if(other.tag=="extraplate"){
+            if(other.GetComponent<extraPlateHandler>().item.text==""&&plateAin==""){
+                interactableAlert.SetActive(false);
+            }else{
+                interactableAlert.SetActive(true);
+            }
+        }else if (other.tag == "trash")
+        {
+            if(plateAin!="")
+                interactableAlert.SetActive(true);
         }else
             interactableAlert.SetActive(true);
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.tag == "ingredient")
-        {
-            if (p1)
-            {
-                if (Input.GetKeyDown(KeyCode.E)){
-                    if(plateAin=="")
-                        plateAin = ""+other.GetComponent<ingredientHandler>().ingredient;
-                    else if(plateBin=="")
-                        plateBin = "" + other.GetComponent<ingredientHandler>().ingredient;
-                }
-            }else{
-                if (Input.GetKeyDown(KeyCode.M))
-                {
-                    if (plateAin == "")
-                        plateAin = "" + other.GetComponent<ingredientHandler>().ingredient;
-                    else if (plateBin == "")
-                        plateBin = "" + other.GetComponent<ingredientHandler>().ingredient;
-                }
-            }
-        }
+        stayingOn = other.gameObject;
+       
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        stayingOn = null;
         interactableAlert.SetActive(false);
     }
 }
+

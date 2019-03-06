@@ -60,8 +60,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\ingredientHandler.cs" />
+    <Compile Include="Assets\Scripts\choppingTableHandler.cs" />
+    <Compile Include="Assets\Scripts\extraPlateHandler.cs" />
     <Compile Include="Assets\Scripts\gameController.cs" />
+    <Compile Include="Assets\Scripts\ingredientHandler.cs" />
     <Compile Include="Assets\Scripts\playerHandler.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>/Users/manish/Downloads/Work/Salad Chef - RealWorld-one/UnityProject-SaladChef/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
