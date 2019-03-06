@@ -14,11 +14,13 @@ Done:
 -Extra Plate Handler
 -Trash Bin Handler
 -Chopping Board Handler
+-Customer Handler
+-Score
+-Timer
 
 
 Todo:
--Customer Handler
--Score
--Time
 -Menu
 -Highscore
+-Power Ups
+-Balancing

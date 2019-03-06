@@ -112,6 +112,30 @@ public class playerHandler : MonoBehaviour
                     }
                 }
             }
+            else if(stayingOn.tag=="customer"){
+                if (plateAin == "")
+                    interactableAlert.SetActive(false);
+                if(p1){
+                    if (Input.GetKeyDown(KeyCode.E))
+                        handleCustomer();
+                }else
+                    if (Input.GetKeyDown(KeyCode.M))
+                        handleCustomer();
+            }
+        }
+    }
+
+    void handleCustomer(){
+        if (plateAin != "")
+        {
+            if(stayingOn.GetComponent<customerHandler>().order.text == plateAin){
+                gameController.score += (int)stayingOn.GetComponent<customerHandler>().tempTimer * 100;
+                stayingOn.gameObject.SetActive(false);
+            }else{
+                stayingOn.GetComponent<customerHandler>().decreasingPower = 2f;
+            }
+            plateAin = plateBin;
+            plateBin = "";
         }
     }
 
@@ -124,7 +148,7 @@ public class playerHandler : MonoBehaviour
             }
         }else{
             if(plateAin!=""&& stayingOn.GetComponent<choppingTableHandler>().temp == 0f){
-                if (stayingOn.GetComponent<choppingTableHandler>().item.text.ToCharArray().Length == 4)
+                if (stayingOn.GetComponent<choppingTableHandler>().item.text.ToCharArray().Length >= 4)
                 {
                     interactableAlert.SetActive(false);
                     if (plateBin == "")
