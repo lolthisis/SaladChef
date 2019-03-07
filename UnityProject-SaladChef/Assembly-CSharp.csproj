@@ -60,13 +60,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\customerHandler.cs" />
+    <Compile Include="Assets\LitJson\IJsonWrapper.cs" />
+    <Compile Include="Assets\LitJson\JsonData.cs" />
+    <Compile Include="Assets\LitJson\JsonException.cs" />
+    <Compile Include="Assets\LitJson\JsonMapper.cs" />
+    <Compile Include="Assets\LitJson\JsonReader.cs" />
+    <Compile Include="Assets\LitJson\JsonWriter.cs" />
+    <Compile Include="Assets\LitJson\Lexer.cs" />
+    <Compile Include="Assets\LitJson\ParserToken.cs" />
     <Compile Include="Assets\Scripts\choppingTableHandler.cs" />
+    <Compile Include="Assets\Scripts\customerHandler.cs" />
     <Compile Include="Assets\Scripts\extraPlateHandler.cs" />
     <Compile Include="Assets\Scripts\gameController.cs" />
     <Compile Include="Assets\Scripts\ingredientHandler.cs" />
     <Compile Include="Assets\Scripts\playerHandler.cs" />
-    <Compile Include="Assets\seatHandler.cs" />
+    <Compile Include="Assets\Scripts\seatHandler.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>/Users/manish/Downloads/Work/Salad Chef - RealWorld-one/UnityProject-SaladChef/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
