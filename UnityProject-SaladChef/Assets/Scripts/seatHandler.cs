@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class seatHandler : MonoBehaviour
 {
@@ -13,7 +14,8 @@ public class seatHandler : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        StartCoroutine(initialize());
+        if (this.gameObject.activeSelf)
+            StartCoroutine(initialize());
     }
 
     IEnumerator initialize()
@@ -26,22 +28,21 @@ public class seatHandler : MonoBehaviour
         customers[2].SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void randomiseTime(int no){
-        StartCoroutine(customer(no));
+        if(this.gameObject.activeSelf)
+            StartCoroutine(customer(no));
     }
 
     IEnumerator customer(int no){
         yield return new WaitForSeconds(Random.Range(minTime, maxTime));
         customers[no].SetActive(true);
     }
+
     private void OnDisable()
     {
         StopAllCoroutines();
     }
+
+
+
 }

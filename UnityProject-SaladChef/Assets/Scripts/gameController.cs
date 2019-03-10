@@ -3,24 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using LitJson;
-
-struct playerData
+using System.IO;
+using System.Linq;
+public class playerData
 {
-    public string p1n, p2n;
-    public int score;
+    public Dictionary<int, string> matrix { get; set; }
 
-    public playerData(string p1, string p2, int scr)
+    public playerData()
     {
-        p1n = p1;
-        p2n = p2;
-        score = scr;
+        matrix = new Dictionary<int, string>();
+    }
+
+    public playerData(Dictionary<int, string> mat){
+        matrix = new Dictionary<int, string>();
+        matrix = mat;
+    }
+
+    public playerData(int score,string names){
+        matrix = new Dictionary<int, string>();
+        matrix.Add(score, names);
     }
 }
 
 public class gameController : MonoBehaviour
 {
     playerData pd;
-    public float timer=120f;
+    public static float timer=20f;
     public static int score=0;
 
     [SerializeField]
@@ -38,9 +46,23 @@ public class gameController : MonoBehaviour
     [SerializeField]
     Button startgameButton;
 
+    string jsonString;
     // Start is called before the first frame update
-    void Awakes()
+    void Awake()
     {
+        pd = new playerData();
+        if (File.Exists(Application.streamingAssetsPath + "/PlayerData.json"))
+        {
+            jsonString = File.ReadAllText(Application.streamingAssetsPath + "/PlayerData.json");
+        }
+        else{
+            print("ASd");
+             jsonString = "";
+        }
+
+        if(jsonString!="")
+            pd.matrix = JsonMapper.ToObject<Dictionary<int, string>>(jsonString);
+
         score = 00;
         timer = 120f;
         gameStarted = false; 
@@ -51,17 +73,19 @@ public class gameController : MonoBehaviour
     }
 
     bool gameStarted,gameEnded;
+
     public void gameOn(){
         gameStarted = true;
         menu.gameObject.SetActive(false);
 
         PlayerPrefs.SetString("p1name", p1name.text);
         PlayerPrefs.SetString("p2name", p2name.text);
+
         foreach(GameObject a in scripts){
             a.SetActive(true);
         }
     }
-
+    JsonData playersJSON;
     // Update is called once per frame
     void Update()
     {
@@ -82,21 +106,60 @@ public class gameController : MonoBehaviour
                 a.SetActive(false);
             }
             gameEnded = false;
-            gameover.SetActive(true);
 
             if (score > PlayerPrefs.GetInt("highscore"))
             {
                 PlayerPrefs.SetInt("highscore", score);
             }
             highscoreText.text = "" + PlayerPrefs.GetInt("highscore");
+
+            if (jsonString == "")
+                pd = new playerData(score, p1name.text + " and " + p2name.text);
+            else
+                pd.matrix.Add(score, p1name.text + " and " + p2name.text);
+            pd.matrix.OrderBy(x => x.Key);
+            playersJSON = JsonMapper.ToJson(pd);
+            File.WriteAllText(Application.streamingAssetsPath + "/PlayerData.json", playersJSON.ToString());
+
+            int temp = 0;
+            foreach(int scr in pd.matrix.Keys){
+                if(temp<10)
+                    top10scores.text += scr + "\n";
+                temp++;
+            }
+            temp = 0;
+            foreach (string names in pd.matrix.Values)
+            {
+                if (temp < 10)
+                    top10names.text +=names + "\n";
+                temp++;
+            }
+            gameover.SetActive(true);
         }
 
-        timerText.text = "" + (int)timer;
+        timerText.text = "" + (int)timer+"s";
         scoreText.text = "" + score;
         scoreEnd.text = "" + score;
     }
 
+    [SerializeField]
+    Text top10names,top10scores;
+
     public void restart(){
         Application.LoadLevel(Application.loadedLevel);
+    }
+
+    private void OnApplicationQuit()
+    {
+        if(!gameEnded&&gameStarted){
+            if (jsonString == "")
+                pd = new playerData(score, p1name.text + " and " + p2name.text);
+            else
+                pd.matrix.Add(score, p1name.text + " and " + p2name.text);
+
+            pd.matrix.OrderByDescending(x => x.Key);
+            playersJSON = JsonMapper.ToJson(pd);
+            File.WriteAllText(Application.streamingAssetsPath + "/PlayerData.json", playersJSON.ToString());
+        }
     }
 }

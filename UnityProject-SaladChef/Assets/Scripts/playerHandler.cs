@@ -41,8 +41,17 @@ public class playerHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector2 inputVal = new Vector2(Input.GetAxisRaw(horizontalAxisName), Input.GetAxisRaw(VerticalAxisName));
-
+        
+        Vector2 inputVal=Vector2.zero;
+        if (p1)
+        {
+            if (!Input.GetKey(KeyCode.E))
+                inputVal = new Vector2(Input.GetAxisRaw(horizontalAxisName), Input.GetAxisRaw(VerticalAxisName));
+        }else
+        {
+            if (!Input.GetKey(KeyCode.M))
+                inputVal = new Vector2(Input.GetAxisRaw(horizontalAxisName), Input.GetAxisRaw(VerticalAxisName));
+        }
         if (canMove)
             moveVelocity = inputVal.normalized * speed;
         else
@@ -130,9 +139,10 @@ public class playerHandler : MonoBehaviour
         {
             if(stayingOn.GetComponent<customerHandler>().order.text == plateAin){
                 gameController.score += (int)stayingOn.GetComponent<customerHandler>().tempTimer * 100;
+                stayingOn.GetComponent<customerHandler>().correctOrder(p1);
                 stayingOn.gameObject.SetActive(false);
             }else{
-                stayingOn.GetComponent<customerHandler>().decreasingPower = 2f;
+                stayingOn.GetComponent<customerHandler>().wrongOrder();
             }
             plateAin = plateBin;
             plateBin = "";
@@ -231,8 +241,24 @@ public class playerHandler : MonoBehaviour
         {
             if(plateAin!="")
                 interactableAlert.SetActive(true);
+        }else if(other.tag=="power"){
+            if(other.GetComponent<powerHandler>().p1==p1){
+                if (other.GetComponent<powerHandler>().power == 2)
+                {
+                    speed += 50;
+                }
+                else if (other.GetComponent<powerHandler>().power == 1)
+                {
+                    gameController.timer += 10f;
+                }
+                else
+                    gameController.score += 2000;
+                Destroy(other.gameObject);
+            }
         }else
             interactableAlert.SetActive(true);
+
+
     }
 
     private void OnTriggerStay2D(Collider2D other)

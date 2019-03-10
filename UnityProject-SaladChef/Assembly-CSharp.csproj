@@ -74,6 +74,7 @@
     <Compile Include="Assets\Scripts\gameController.cs" />
     <Compile Include="Assets\Scripts\ingredientHandler.cs" />
     <Compile Include="Assets\Scripts\playerHandler.cs" />
+    <Compile Include="Assets\Scripts\powerHandler.cs" />
     <Compile Include="Assets\Scripts\seatHandler.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>/Users/manish/Downloads/Work/Salad Chef - RealWorld-one/UnityProject-SaladChef/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>

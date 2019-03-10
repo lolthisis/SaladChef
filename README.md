@@ -7,7 +7,7 @@ Work together, chop salad, serve hungry customers fast, earn points, power ups.
 Making a local multiplayer co-op game I took liberty to make the timer and score common for both player so they work together to gain higher score together.
 
 Game Time:120 sec
-* is mentioned for chopped vegetable.
+Star (*) is mentioned for chopped vegetable.
 
 Done:
 -Scene layout
@@ -22,7 +22,10 @@ Done:
 -Timer
 -Menu
 -Highscore
+-Power Ups
 
 Todo:
--Power Ups
--Balancing
+-Leaderboard
+
+Bugs:
+Deserializing dictionary from json 
