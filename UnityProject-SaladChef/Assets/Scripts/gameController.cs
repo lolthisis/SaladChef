@@ -61,8 +61,9 @@ public class gameController : MonoBehaviour
         }
 
         if(jsonString!="")
-            pd.matrix = JsonMapper.ToObject<Dictionary<int, string>>(jsonString);
+            pd = JsonUtility.FromJson<playerData>(jsonString);
 
+        print(pd.matrix.Count);
         score = 00;
         timer = 120f;
         gameStarted = false; 
