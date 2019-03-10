@@ -23,9 +23,7 @@ Done:
 -Menu
 -Highscore
 -Power Ups
-
-Todo:
 -Leaderboard
 
-Bugs:
-Deserializing dictionary from json 
+Future scope of improvement:
+-Serving wrong food to customer should result in score penalty
