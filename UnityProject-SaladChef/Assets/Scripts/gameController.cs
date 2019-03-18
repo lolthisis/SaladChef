@@ -63,7 +63,7 @@ public class gameController : MonoBehaviour
         }
 
         score = 00;
-        timer = 10f;
+        timer = 120f;
         gameStarted = false; 
         foreach (GameObject a in scripts)
         {

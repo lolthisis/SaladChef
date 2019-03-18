@@ -1,20 +1,33 @@
 ﻿<Properties StartupConfiguration="{44BDBC29-9ADF-3953-3ABB-B8F875DBAE6C}|">
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/LitJson/JsonMapper.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/gameController.cs">
     <Files>
-      <File FileName="Assets/Scripts/playerHandler.cs" Line="45" Column="38" />
+      <File FileName="Assets/Scripts/playerHandler.cs" Line="48" Column="35" />
       <File FileName="Assets/Scripts/choppingTableHandler.cs" Line="48" Column="1" />
-      <File FileName="Assets/Scripts/gameController.cs" Line="48" Column="26" />
-      <File FileName="Assets/Scripts/seatHandler.cs" Line="28" Column="6" />
-      <File FileName="Assets/Scripts/customerHandler.cs" Line="87" Column="9" />
+      <File FileName="Assets/Scripts/gameController.cs" Line="130" Column="24" />
+      <File FileName="Assets/Scripts/seatHandler.cs" Line="17" Column="40" />
+      <File FileName="Assets/Scripts/customerHandler.cs" Line="119" Column="38" />
       <File FileName="Assets/Scripts/powerHandler.cs" Line="15" Column="17" />
-      <File FileName="Assets/LitJson/JsonMapper.cs" Line="755" Column="1" />
+      <File FileName="Assets/LitJson/JsonMapper.cs" Line="871" Column="25" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="UnityProject-SaladChef" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="gameController.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />
 </Properties>
